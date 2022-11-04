@@ -1,0 +1,55 @@
+@import '/src/css/globales.scss';
+
+.pokemonDetails {
+    display: flex;
+    align-items: center;
+    width: 70%;
+    height: 500px;
+    margin: 20px auto;
+    padding: 18px 18px;
+    border-radius: 12px;
+    background-color: $white;
+
+    &__pokemon {
+        position: relative;
+        width: 26%;
+        height: 100%;
+        padding: 20px;
+        border-radius: 12px;
+        background-color: #fbe3df;
+
+        &__name {
+            font-size: 3.8rem;
+            color: #fff;
+            text-shadow: 2px 2px #ff0000;
+        }
+
+        &__type {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 4px;
+            font-size: 1.6rem;
+            color: #fff;
+            border-radius: 4px;
+            background-color: red
+        }
+
+        &__img {
+            position: absolute;
+            bottom: 40px;
+            right: -80px;
+            transform: rotatey(180deg);
+            width: 350px;
+            height: 350px;
+            object-fit: cover;
+        }
+    }
+
+    &__details {
+        width: 74%;
+        height: 100%;
+        padding: 20px;
+        border-radius: 12px;
+        // border: 1px solid blue;
+    }
+}

@@ -1,0 +1,10 @@
+@import '/src/css/globales.scss';
+
+.videoBackground {
+    position: fixed;
+    top: -140px;
+    left: -200px;
+    z-index: -1;
+    min-width: 100%;
+    min-height: 100%;
+}
