@@ -14,6 +14,8 @@ export function PokeProvider({ children }) {
   const [pokeChoosen, setPokeChoosen] = useState("");
   const [pokemonsFound, setPokemonsFound] = useState([]);
   const [pokeBio, setPokeBio] = useState("");
+  const [infoEvos, setInfoEvos] = useState([]);
+  const [pokeEvolutionNames, setPokeEvolutionNames] = useState([]);
 
   const navigate = useNavigate();
 
@@ -24,7 +26,7 @@ export function PokeProvider({ children }) {
 
   async function searchPokemon() {
     try {
-      const { data, status } = await api(`pokemon/${foundPoke.toLowerCase()}`);
+      const { data } = await api(`pokemon/${foundPoke.toLowerCase()}`);
       const searchedPokemons = pokemonsFound.map((e) => e.name);
       if (searchedPokemons.includes(data.species.name)) {
         alert(`You already have it`);
@@ -37,15 +39,58 @@ export function PokeProvider({ children }) {
     }
   }
   // https://pokeapi.co/api/v2/pokemon-species/charizard
-  async function getPokemonBio() {
+  async function getPokemonSpecies() {
     try {
-      const { data, status } = await api(
+      const { data } = await api(
         `pokemon-species/${pokeChoosen.toLowerCase()}`
       );
-      const bio = data.flavor_text_entries[7].flavor_text;
+      const bio = data.flavor_text_entries[7].flavor_text.replace("\f", " ");
+      const evoURL = data.evolution_chain.url.split("/").slice(5, 7).join("/");
       setPokeBio(bio);
+      // setEvolutionURL(evoURL);
+      getPokemonEvolutions(evoURL);
     } catch (error) {
-      alert(error.message);
+      alert("species");
+    }
+  }
+
+  async function getPokemonEvolutions(evoURL) {
+    try {
+      const { data } = await api(`${evoURL}`);
+      const evolutions = [];
+      const babyPokemon = data.chain.species.name;
+      const midPokemon =
+        data.chain.evolves_to[0] === undefined
+          ? "no_evolution"
+          : data.chain.evolves_to[0].species.name;
+
+      let oldPokemon;
+      if (midPokemon === "no_evolution") {
+        oldPokemon = "no_evolution";
+      } else {
+        oldPokemon =
+          data.chain.evolves_to[0].evolves_to[0] === undefined
+            ? "no_evolution"
+            : data.chain.evolves_to[0].evolves_to[0].species.name;
+      }
+
+      evolutions.push(babyPokemon);
+      evolutions.push(midPokemon);
+      evolutions.push(oldPokemon);
+      setPokeEvolutionNames(evolutions);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getEvolutionsInformations(pokemon) {
+    if (pokemon !== "no_evolution") {
+      try {
+        const { data } = await api(`pokemon/${pokemon}`);
+        return data;
+      } catch (error) {
+        alert(error.message);
+      }
     }
   }
 
@@ -57,7 +102,11 @@ export function PokeProvider({ children }) {
     pokeChoosen,
     pokeSelected,
     pokeBio,
-    getPokemonBio,
+    getPokemonSpecies,
+    pokeEvolutionNames,
+    getEvolutionsInformations,
+    infoEvos,
+    setInfoEvos,
   };
   return <PokeContext.Provider value={data}>{children}</PokeContext.Provider>;
 }

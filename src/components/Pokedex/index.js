@@ -17,6 +17,7 @@ export const Pokedex = () => {
                 imgURL={pokemon.sprites.front_default}
                 name={pokemon.name}
                 type={pokemon.types[0].type.name}
+                key={pokemon.name}
               />
             );
           })}
