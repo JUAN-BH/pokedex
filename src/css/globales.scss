@@ -1,5 +1,7 @@
 $white: #fff;
 $headerBackgroundColor: #78c8f9;
+$breakPoints: (lg: 768px,
+);
 
 * {
     margin: 0;
@@ -24,6 +26,22 @@ h2 {
 
 main {
     width: 100%;
+}
+
+@mixin media-up($breakPoint) {
+    @media screen and (min-width: map-get($breakPoints, $breakPoint)) {
+        @content;
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 ::-webkit-scrollbar {

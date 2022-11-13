@@ -2,11 +2,9 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import { Header } from "./components/Header";
 import { Pokedex } from "./components/Pokedex";
 import { PokeDetail } from "./components/PokeDetail";
-import { PokeProvider, usePokeData } from "./utils/pokeData";
+import { PokeProvider } from "./utils/pokeData";
 
 function App() {
-  const pokeData = usePokeData();
-  console.log("foundPoke", pokeData);
   return (
     <HashRouter>
       <PokeProvider>

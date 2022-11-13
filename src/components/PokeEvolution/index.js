@@ -9,6 +9,7 @@ export const PokeEvolution = () => {
     pokeSelected,
     infoEvos,
     setInfoEvos,
+    backColor,
   } = usePokeData();
 
   useEffect(() => {
@@ -35,10 +36,12 @@ export const PokeEvolution = () => {
           if (pokemon !== "no_evolution") {
             return (
               <li key={pokemon.name} onClick={() => pokeSelected(pokemon.name)}>
-                <div className="backImg">
+                <div className="backImg" style={{ backgroundColor: backColor }}>
                   <img src={pokemon.sprites.front_default} alt={pokemon.name} />
                 </div>
-                <h3>{pokemon.name}</h3>
+                <h3>
+                  {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+                </h3>
               </li>
             );
           }

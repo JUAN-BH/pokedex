@@ -16,6 +16,30 @@ export function PokeProvider({ children }) {
   const [pokeBio, setPokeBio] = useState("");
   const [infoEvos, setInfoEvos] = useState([]);
   const [pokeEvolutionNames, setPokeEvolutionNames] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [backColor, setBackColor] = useState("");
+  const [error, setError] = useState(false);
+
+  const colors = [
+    { type: "normal", typeColor: "#a8a878", backColor: "#F5F5F5" },
+    { type: "fire", typeColor: "#f08030", backColor: "#FDDFDF" },
+    { type: "water", typeColor: "#6890ef", backColor: "#DEF3FD" },
+    { type: "grass", typeColor: "#78c850", backColor: "#DEFDE0" },
+    { type: "electric", typeColor: "#f8d030", backColor: "#FCF7DE" },
+    { type: "ice", typeColor: "#98d8d8", backColor: "#cce4e4" },
+    { type: "fighting", typeColor: "#bf3129", backColor: "#E6E0D4" },
+    { type: "poison", typeColor: "#a0409f", backColor: "#98D7A5" },
+    { type: "ground", typeColor: "#dfbe68", backColor: "#F4E7DA" },
+    { type: "flying", typeColor: "#a890f0", backColor: "#F5F5F5" },
+    { type: "psychic", typeColor: "#f85888", backColor: "#EAEDA1" },
+    { type: "bug", typeColor: "#a8b820", backColor: "#F8D5A3" },
+    { type: "rock", typeColor: "#b8a038", backColor: "#D5D5D4" },
+    { type: "ghost", typeColor: "#705898", backColor: "#9790a3" },
+    { type: "dark", typeColor: "#705848", backColor: "#807873" },
+    { type: "dragon", typeColor: "#7038f8", backColor: "#97B3E6" },
+    { type: "steel", typeColor: "#b8b8d0", backColor: "#cbcbd4" },
+    { type: "fairy", typeColor: "#f0b6bc", backColor: "#FCEAFF" },
+  ];
 
   const navigate = useNavigate();
 
@@ -26,7 +50,9 @@ export function PokeProvider({ children }) {
 
   async function searchPokemon() {
     try {
+      setLoading(true);
       const { data } = await api(`pokemon/${foundPoke.toLowerCase()}`);
+      setLoading(false);
       const searchedPokemons = pokemonsFound.map((e) => e.name);
       if (searchedPokemons.includes(data.species.name)) {
         alert(`You already have it`);
@@ -35,28 +61,33 @@ export function PokeProvider({ children }) {
       }
       setFoundPoke("");
     } catch (error) {
-      alert(`Couldn't find the pokemon: ${foundPoke}`);
+      // alert(`Couldn't find the pokemon: ${foundPoke}`);
+      setError(true);
+      setLoading(false);
     }
   }
-  // https://pokeapi.co/api/v2/pokemon-species/charizard
   async function getPokemonSpecies() {
     try {
+      setLoading(true);
       const { data } = await api(
         `pokemon-species/${pokeChoosen.toLowerCase()}`
       );
+      setLoading(false);
       const bio = data.flavor_text_entries[7].flavor_text.replace("\f", " ");
       const evoURL = data.evolution_chain.url.split("/").slice(5, 7).join("/");
       setPokeBio(bio);
-      // setEvolutionURL(evoURL);
       getPokemonEvolutions(evoURL);
     } catch (error) {
-      alert("species");
+      setLoading(false);
+      setError(true);
+      // alert("species");
     }
   }
-
   async function getPokemonEvolutions(evoURL) {
     try {
+      setLoading(true);
       const { data } = await api(`${evoURL}`);
+      setLoading(false);
       const evolutions = [];
       const babyPokemon = data.chain.species.name;
       const midPokemon =
@@ -79,19 +110,25 @@ export function PokeProvider({ children }) {
       evolutions.push(oldPokemon);
       setPokeEvolutionNames(evolutions);
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      setError(true);
     }
   }
-
   async function getEvolutionsInformations(pokemon) {
     if (pokemon !== "no_evolution") {
       try {
         const { data } = await api(`pokemon/${pokemon}`);
         return data;
       } catch (error) {
-        alert(error.message);
+        setLoading(false);
+        setError(true);
       }
     }
+  }
+
+  function getBackColor(type) {
+    const backColor = colors.find((color) => color.type === type).backColor;
+    setBackColor(backColor);
   }
 
   const data = {
@@ -107,6 +144,12 @@ export function PokeProvider({ children }) {
     getEvolutionsInformations,
     infoEvos,
     setInfoEvos,
+    loading,
+    colors,
+    backColor,
+    getBackColor,
+    error,
+    setError,
   };
   return <PokeContext.Provider value={data}>{children}</PokeContext.Provider>;
 }
