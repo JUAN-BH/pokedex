@@ -1,8 +1,17 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { usePokeData } from "../../utils/pokeData";
+import { PokeballBtn } from "../PokeballBtn";
 import "./pokemon.scss";
 
-export const Pokemon = ({ name, type, imgURL }) => {
+export const Pokemon = ({ name, type, imgURL, pokemonAll }) => {
+  const navigate = useNavigate();
+  function linkToPokemon(e, pokemon) {
+    if (e.target.id !== "savePokemon") {
+      navigate(`/detail/${pokemon}`);
+    }
+  }
+
   const { colors } = usePokeData();
   const nameUpper = name.charAt(0).toUpperCase() + name.slice(1);
 
@@ -13,7 +22,12 @@ export const Pokemon = ({ name, type, imgURL }) => {
   const backColor = getBackColor();
   const styles = { backgroundColor: backColor };
   return (
-    <article className="pokemonItem" style={styles}>
+    <article
+      className="pokemonItem"
+      style={styles}
+      onClick={(e) => linkToPokemon(e, name)}
+    >
+      <PokeballBtn pokemonAll={pokemonAll} />
       <div className="pokemonItem__back">
         <img src={imgURL} alt={name} className="pokemonItem__back__pokeImg" />
       </div>

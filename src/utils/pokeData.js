@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
 import axios from "axios";
+import { usePokeBall } from "./usePokeBall";
 
 const PokeContext = createContext();
 const api = axios.create({
@@ -9,8 +10,8 @@ const api = axios.create({
 });
 
 export function PokeProvider({ children }) {
+  const { pokemonsCatch, catchPokemon } = usePokeBall();
   const [foundPoke, setFoundPoke] = useState("");
-  const [pokeChoosen, setPokeChoosen] = useState("");
   const [pokemonsFound, setPokemonsFound] = useState([]);
   const [pokeBio, setPokeBio] = useState("");
   const [infoEvos, setInfoEvos] = useState([]);
@@ -19,6 +20,10 @@ export function PokeProvider({ children }) {
   const [backColor, setBackColor] = useState("");
   const [error, setError] = useState(false);
   const [already, setAlready] = useState(false);
+
+  useEffect(() => {
+    setPokemonsFound(pokemonsCatch);
+  }, [pokemonsCatch]);
 
   const colors = [
     { type: "normal", typeColor: "#a8a878", backColor: "#F5F5F5" },
@@ -40,10 +45,6 @@ export function PokeProvider({ children }) {
     { type: "steel", typeColor: "#b8b8d0", backColor: "#cbcbd4" },
     { type: "fairy", typeColor: "#f0b6bc", backColor: "#FCEAFF" },
   ];
-
-  function pokeSelected(pokemon) {
-    setPokeChoosen(pokemon);
-  }
 
   async function searchPokemon() {
     try {
@@ -129,8 +130,6 @@ export function PokeProvider({ children }) {
     setFoundPoke,
     pokemonsFound,
     searchPokemon,
-    pokeChoosen,
-    pokeSelected,
     pokeBio,
     getPokemonSpecies,
     pokeEvolutionNames,
@@ -145,6 +144,7 @@ export function PokeProvider({ children }) {
     setError,
     already,
     setAlready,
+    catchPokemon,
   };
   return <PokeContext.Provider value={data}>{children}</PokeContext.Provider>;
 }

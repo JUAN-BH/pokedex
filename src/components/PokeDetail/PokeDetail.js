@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./pokemonDetails.scss";
 import { VideoBackground } from "../VideoBackground";
-import { usePokeData } from "../../utils/pokeData";
 import { PokeEvolution } from "../PokeEvolution";
 import { PokeStasAbilities } from "../PokeStasAbilities";
 import { PokeBio } from "../PokeBio";
@@ -9,16 +8,14 @@ import { Loading } from "../Loading";
 import { Modal } from "../Modal";
 import { Error } from "../Error";
 import { useParams } from "react-router-dom";
+import { usePokeData } from "../../utils/pokeData";
 
-export const PokeDetail = () => {
+export const PokeDetail = ({ pokeToDisplay }) => {
   const { slug } = useParams();
   const [typeColor, setTypeColor] = useState("");
   const {
-    pokemonsFound,
-    pokeChoosen,
     pokeBio,
     getPokemonSpecies,
-    infoEvos,
     loading,
     colors,
     backColor,
@@ -29,13 +26,12 @@ export const PokeDetail = () => {
   useEffect(() => {
     getTypeColor();
     getPokemonSpecies(slug);
-  }, [pokeChoosen]);
+  }, [slug]);
 
-  const pokeToDisplay =
-    pokemonsFound.filter((poke) => poke.name === slug)[0] ||
-    infoEvos.filter((poke) => poke.name === slug)[0];
   const nameUpper =
     pokeToDisplay.name.charAt(0).toUpperCase() + pokeToDisplay.name.slice(1);
+
+  getBackColor(pokeToDisplay.types[0].type.name);
 
   function getTypeColor() {
     const color = colors.find(
@@ -43,8 +39,6 @@ export const PokeDetail = () => {
     );
     setTypeColor(color.typeColor);
   }
-
-  getBackColor(pokeToDisplay.types[0].type.name);
 
   return (
     <main>

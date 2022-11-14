@@ -6,7 +6,6 @@ import { usePokeData } from "../../utils/pokeData";
 import { Loading } from "../Loading";
 import { Modal } from "../Modal";
 import { Error } from "../Error";
-import { Link } from "react-router-dom";
 
 export const Pokedex = () => {
   const { pokemonsFound, foundPoke, loading, error, already } = usePokeData();
@@ -38,17 +37,13 @@ export const Pokedex = () => {
           ) : (
             pokemonsFound.map((pokemon) => {
               return (
-                <Link
-                  to={`/detail/${pokemon.name}`}
+                <Pokemon
                   key={pokemon.name}
-                  className="linkPoke"
-                >
-                  <Pokemon
-                    imgURL={pokemon.sprites.front_default}
-                    name={pokemon.name}
-                    type={pokemon.types[0].type.name}
-                  />
-                </Link>
+                  imgURL={pokemon.sprites.front_default}
+                  name={pokemon.name}
+                  type={pokemon.types[0].type.name}
+                  pokemonAll={pokemon}
+                />
               );
             })
           )}
