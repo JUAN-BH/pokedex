@@ -8,9 +8,10 @@ import { PokeBio } from "../PokeBio";
 import { Loading } from "../Loading";
 import { Modal } from "../Modal";
 import { Error } from "../Error";
+import { useParams } from "react-router-dom";
 
-// console.log(window.location.hash);
 export const PokeDetail = () => {
+  const { slug } = useParams();
   const [typeColor, setTypeColor] = useState("");
   const {
     pokemonsFound,
@@ -27,12 +28,12 @@ export const PokeDetail = () => {
 
   useEffect(() => {
     getTypeColor();
-    getPokemonSpecies();
+    getPokemonSpecies(slug);
   }, [pokeChoosen]);
 
   const pokeToDisplay =
-    pokemonsFound.filter((poke) => poke.name === pokeChoosen)[0] ||
-    infoEvos.filter((poke) => poke.name === pokeChoosen)[0];
+    pokemonsFound.filter((poke) => poke.name === slug)[0] ||
+    infoEvos.filter((poke) => poke.name === slug)[0];
   const nameUpper =
     pokeToDisplay.name.charAt(0).toUpperCase() + pokeToDisplay.name.slice(1);
 

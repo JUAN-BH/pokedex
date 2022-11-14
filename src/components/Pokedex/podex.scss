@@ -9,4 +9,9 @@
     height: 600px;
     margin: auto;
     overflow-y: scroll;
+
+    &__intial {
+        color: $white;
+        text-shadow: 2px 2px $headerBackgroundColor;
+    }
 }

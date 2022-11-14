@@ -10,8 +10,10 @@ function App() {
       <PokeProvider>
         <Header />
         <Routes>
+          <Route path="*" element={<h1>Page Not Found</h1>} />
+
           <Route path="/" element={<Pokedex />} />
-          <Route path={`/detail`} element={<PokeDetail />} />
+          <Route path={`/detail/:slug`} element={<PokeDetail />} />
         </Routes>
       </PokeProvider>
     </HashRouter>

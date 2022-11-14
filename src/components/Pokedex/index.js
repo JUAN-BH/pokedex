@@ -6,9 +6,10 @@ import { usePokeData } from "../../utils/pokeData";
 import { Loading } from "../Loading";
 import { Modal } from "../Modal";
 import { Error } from "../Error";
+import { Link } from "react-router-dom";
 
 export const Pokedex = () => {
-  const { pokemonsFound, foundPoke, loading, error } = usePokeData();
+  const { pokemonsFound, foundPoke, loading, error, already } = usePokeData();
   return (
     <>
       <main>
@@ -23,17 +24,34 @@ export const Pokedex = () => {
             <Error message={`We couldn't find the pokemon: ${foundPoke}`} />
           </Modal>
         )}
+
+        {already && (
+          <Modal>
+            <Error message={`You already have the pokemon: ${foundPoke}`} />
+          </Modal>
+        )}
         <section className="pokemonsContainer">
-          {pokemonsFound.map((pokemon) => {
-            return (
-              <Pokemon
-                imgURL={pokemon.sprites.front_default}
-                name={pokemon.name}
-                type={pokemon.types[0].type.name}
-                key={pokemon.name}
-              />
-            );
-          })}
+          {pokemonsFound.length === 0 ? (
+            <h2 className="pokemonsContainer__intial">
+              Start by searching a pokemon
+            </h2>
+          ) : (
+            pokemonsFound.map((pokemon) => {
+              return (
+                <Link
+                  to={`/detail/${pokemon.name}`}
+                  key={pokemon.name}
+                  className="linkPoke"
+                >
+                  <Pokemon
+                    imgURL={pokemon.sprites.front_default}
+                    name={pokemon.name}
+                    type={pokemon.types[0].type.name}
+                  />
+                </Link>
+              );
+            })
+          )}
         </section>
       </main>
     </>

@@ -3,7 +3,7 @@ import { usePokeData } from "../../utils/pokeData";
 import "./pokemon.scss";
 
 export const Pokemon = ({ name, type, imgURL }) => {
-  const { pokeSelected, colors } = usePokeData();
+  const { colors } = usePokeData();
   const nameUpper = name.charAt(0).toUpperCase() + name.slice(1);
 
   function getBackColor() {
@@ -13,11 +13,7 @@ export const Pokemon = ({ name, type, imgURL }) => {
   const backColor = getBackColor();
   const styles = { backgroundColor: backColor };
   return (
-    <article
-      className="pokemonItem"
-      onClick={() => pokeSelected(name)}
-      style={styles}
-    >
+    <article className="pokemonItem" style={styles}>
       <div className="pokemonItem__back">
         <img src={imgURL} alt={name} className="pokemonItem__back__pokeImg" />
       </div>

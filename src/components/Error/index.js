@@ -3,9 +3,10 @@ import { usePokeData } from "../../utils/pokeData";
 import "../Modal/modal.scss";
 
 export const Error = ({ message }) => {
-  const { setError } = usePokeData();
+  const { setError, setAlready } = usePokeData();
   function closeModal() {
     setError(false);
+    setAlready(false);
   }
   return (
     <>

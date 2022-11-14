@@ -22,7 +22,7 @@ export const Header = () => {
           />
           <h1 className="menuHeader__titleCon__title">Pokemon</h1>
         </section>
-        {window.location.hash !== "#/detail" && <Searcher />}
+        {!window.location.hash.includes("#/detail") && <Searcher />}
       </nav>
     </header>
   );

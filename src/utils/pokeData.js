@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useContext } from "react";
 import { createContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const PokeContext = createContext();
 const api = axios.create({
@@ -19,6 +18,7 @@ export function PokeProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [backColor, setBackColor] = useState("");
   const [error, setError] = useState(false);
+  const [already, setAlready] = useState(false);
 
   const colors = [
     { type: "normal", typeColor: "#a8a878", backColor: "#F5F5F5" },
@@ -41,10 +41,7 @@ export function PokeProvider({ children }) {
     { type: "fairy", typeColor: "#f0b6bc", backColor: "#FCEAFF" },
   ];
 
-  const navigate = useNavigate();
-
   function pokeSelected(pokemon) {
-    navigate("/detail");
     setPokeChoosen(pokemon);
   }
 
@@ -55,23 +52,20 @@ export function PokeProvider({ children }) {
       setLoading(false);
       const searchedPokemons = pokemonsFound.map((e) => e.name);
       if (searchedPokemons.includes(data.species.name)) {
-        alert(`You already have it`);
+        setAlready(true);
       } else {
         setPokemonsFound([...pokemonsFound, data]);
+        setFoundPoke("");
       }
-      setFoundPoke("");
     } catch (error) {
-      // alert(`Couldn't find the pokemon: ${foundPoke}`);
       setError(true);
       setLoading(false);
     }
   }
-  async function getPokemonSpecies() {
+  async function getPokemonSpecies(slug) {
     try {
       setLoading(true);
-      const { data } = await api(
-        `pokemon-species/${pokeChoosen.toLowerCase()}`
-      );
+      const { data } = await api(`pokemon-species/${slug.toLowerCase()}`);
       setLoading(false);
       const bio = data.flavor_text_entries[7].flavor_text.replace("\f", " ");
       const evoURL = data.evolution_chain.url.split("/").slice(5, 7).join("/");
@@ -80,7 +74,6 @@ export function PokeProvider({ children }) {
     } catch (error) {
       setLoading(false);
       setError(true);
-      // alert("species");
     }
   }
   async function getPokemonEvolutions(evoURL) {
@@ -150,6 +143,8 @@ export function PokeProvider({ children }) {
     getBackColor,
     error,
     setError,
+    already,
+    setAlready,
   };
   return <PokeContext.Provider value={data}>{children}</PokeContext.Provider>;
 }
