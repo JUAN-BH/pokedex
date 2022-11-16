@@ -5,13 +5,10 @@ import { PokeDetail } from "./PokeDetail";
 
 export const PokeDetailAuth = () => {
   const { slug } = useParams();
-  const { pokemonsFound, infoEvos } = usePokeData();
-
-  const pokemonsCaught = JSON.parse(localStorage.getItem("pokemonsCaught"));
+  const { pokemonsCatch, infoEvos } = usePokeData();
 
   const pokeToDisplay =
-    pokemonsCaught.filter((poke) => poke.name === slug)[0] ||
-    pokemonsFound.filter((poke) => poke.name === slug)[0] ||
+    pokemonsCatch.filter((poke) => poke.name === slug)[0] ||
     infoEvos.filter((poke) => poke.name === slug)[0] ||
     null;
 

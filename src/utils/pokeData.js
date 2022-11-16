@@ -10,9 +10,8 @@ const api = axios.create({
 });
 
 export function PokeProvider({ children }) {
-  const { pokemonsCatch, catchPokemon } = usePokeBall();
+  const { pokemonsCatch, catchPokemon, setPokemonsCatch } = usePokeBall();
   const [foundPoke, setFoundPoke] = useState("");
-  const [pokemonsFound, setPokemonsFound] = useState([]);
   const [pokeBio, setPokeBio] = useState("");
   const [infoEvos, setInfoEvos] = useState([]);
   const [pokeEvolutionNames, setPokeEvolutionNames] = useState([]);
@@ -20,10 +19,6 @@ export function PokeProvider({ children }) {
   const [backColor, setBackColor] = useState("");
   const [error, setError] = useState(false);
   const [already, setAlready] = useState(false);
-
-  useEffect(() => {
-    setPokemonsFound(pokemonsCatch);
-  }, [pokemonsCatch]);
 
   const colors = [
     { type: "normal", typeColor: "#a8a878", backColor: "#F5F5F5" },
@@ -51,11 +46,11 @@ export function PokeProvider({ children }) {
       setLoading(true);
       const { data } = await api(`pokemon/${foundPoke.toLowerCase()}`);
       setLoading(false);
-      const searchedPokemons = pokemonsFound.map((e) => e.name);
+      const searchedPokemons = pokemonsCatch.map((e) => e.name);
       if (searchedPokemons.includes(data.species.name)) {
         setAlready(true);
       } else {
-        setPokemonsFound([...pokemonsFound, data]);
+        setPokemonsCatch([...pokemonsCatch, data]);
         setFoundPoke("");
       }
     } catch (error) {
@@ -128,7 +123,6 @@ export function PokeProvider({ children }) {
   const data = {
     foundPoke,
     setFoundPoke,
-    pokemonsFound,
     searchPokemon,
     pokeBio,
     getPokemonSpecies,
@@ -145,6 +139,7 @@ export function PokeProvider({ children }) {
     already,
     setAlready,
     catchPokemon,
+    pokemonsCatch,
   };
   return <PokeContext.Provider value={data}>{children}</PokeContext.Provider>;
 }

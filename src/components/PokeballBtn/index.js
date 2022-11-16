@@ -5,6 +5,22 @@ import { usePokeData } from "../../utils/pokeData";
 
 export const PokeballBtn = ({ pokemonAll }) => {
   const { catchPokemon } = usePokeData();
+  const [pokeball, setPokeball] = React.useState(false);
+
+  React.useEffect(() => {
+    const pokeCoughtNames = JSON.parse(
+      localStorage.getItem("pokemonsCaught")
+    ).map((poke) => poke.name);
+    setPokeball(pokeCoughtNames.includes(pokemonAll.name));
+  }, []);
+
+  function pokeballToggle() {
+    if (pokeball) {
+      setPokeball(false);
+    } else {
+      setPokeball(true);
+    }
+  }
 
   return (
     <div
@@ -13,7 +29,8 @@ export const PokeballBtn = ({ pokemonAll }) => {
     >
       <img
         className="pokemonItem__pokeball__btn"
-        src={pokeball_inactive}
+        onClick={pokeballToggle}
+        src={pokeball ? pokeball_active : pokeball_inactive}
         alt="pokeball"
         id="savePokemon"
       />

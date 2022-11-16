@@ -3,6 +3,7 @@ import { useState } from "react";
 
 export const usePokeBall = () => {
   const [pokemonsCatch, setPokemonsCatch] = useState([]);
+
   useEffect(() => {
     let pokemonsCaught = JSON.parse(localStorage.getItem("pokemonsCaught"));
     if (!Array.isArray(pokemonsCaught)) {
@@ -18,22 +19,21 @@ export const usePokeBall = () => {
   function catchPokemon(pokemon) {
     let pokemonsCaught = JSON.parse(localStorage.getItem("pokemonsCaught"));
     const pokemonsNames = pokemonsCaught.map((e) => e.name);
+
     if (!pokemonsNames.includes(pokemon.name)) {
       pokemonsCaught = [...pokemonsCaught, pokemon];
       localStorage.setItem(
         "pokemonsCaught",
         JSON.stringify([...pokemonsCaught])
       );
-      setPokemonsCatch(pokemonsCaught);
     } else {
       pokemonsCaught = pokemonsCaught.filter((e) => e.name !== pokemon.name);
       localStorage.setItem(
         "pokemonsCaught",
         JSON.stringify([...pokemonsCaught])
       );
-      setPokemonsCatch(pokemonsCaught);
     }
   }
 
-  return { pokemonsCatch, catchPokemon };
+  return { pokemonsCatch, catchPokemon, setPokemonsCatch };
 };

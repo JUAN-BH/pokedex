@@ -8,7 +8,7 @@ import { Modal } from "../Modal";
 import { Error } from "../Error";
 
 export const Pokedex = () => {
-  const { pokemonsFound, foundPoke, loading, error, already } = usePokeData();
+  const { pokemonsCatch, foundPoke, loading, error, already } = usePokeData();
   return (
     <>
       <main>
@@ -30,12 +30,12 @@ export const Pokedex = () => {
           </Modal>
         )}
         <section className="pokemonsContainer">
-          {pokemonsFound.length === 0 ? (
+          {pokemonsCatch.length === 0 ? (
             <h2 className="pokemonsContainer__intial">
-              Start by searching a pokemon
+              Search and catch them all!
             </h2>
           ) : (
-            pokemonsFound.map((pokemon) => {
+            pokemonsCatch.map((pokemon) => {
               return (
                 <Pokemon
                   key={pokemon.name}
