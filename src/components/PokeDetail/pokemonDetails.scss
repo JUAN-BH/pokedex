@@ -116,8 +116,8 @@
         flex-direction: row;
         align-items: inherit;
         margin: 40px auto;
-        width: 70%;
-        height: 500px;
+        width: 85%;
+        height: 530px;
 
         &__pokemon {
             position: relative;
@@ -128,10 +128,10 @@
 
             &__img {
                 position: absolute;
-                bottom: 50px;
-                left: calc(50% - 175px);
-                width: 350px;
-                height: 350px;
+                bottom: 70px;
+                left: calc(50% - 150px);
+                width: 300px;
+                height: 300px;
             }
         }
 
@@ -165,7 +165,7 @@
                     flex-direction: row;
                     align-items: initial;
                     flex-wrap: wrap;
-                    // justify-content: space-evenly;
+                    margin-top: 14px;
 
                     li {
                         margin: 0;
@@ -182,4 +182,28 @@
         }
     }
 
+}
+
+@include media-up(xl) {
+    .pokemonDetails {
+        width: 70%;
+        height: 500px;
+
+        &__pokemon {
+            &__img {
+                bottom: 40px;
+                left: calc(50% - 175px);
+                width: 350px;
+                height: 350px;
+            }
+        }
+
+        &__details {
+            &__evo {
+                ul {
+                    margin-top: 14px;
+                }
+            }
+        }
+    }
 }
