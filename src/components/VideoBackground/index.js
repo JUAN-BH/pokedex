@@ -10,6 +10,7 @@ export const VideoBackground = () => {
         autoPlay
         loop
         muted
+        controls={false}
         className="videoBackground"
       ></video>
     </>
