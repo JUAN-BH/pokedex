@@ -30,6 +30,7 @@ header {
         &__searchSection {
             display: flex;
             align-items: center;
+            margin-top: 14px;
 
             input {
                 padding: 8px;
@@ -66,5 +67,15 @@ header {
 
     .menuHeader__titleCon:hover .menuHeader__titleCon__icon {
         animation: spin 0.5s linear infinite;
+    }
+}
+
+@include media-up(lg) {
+    header {
+        .menuHeader {
+            &__searchSection {
+                margin-top: 0px;
+            }
+        }
     }
 }

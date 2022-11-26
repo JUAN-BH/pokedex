@@ -25,6 +25,8 @@ h2 {
 
 main {
     width: 100%;
+    overflow-y: scroll;
+
 }
 
 @mixin media-up($breakPoint) {
