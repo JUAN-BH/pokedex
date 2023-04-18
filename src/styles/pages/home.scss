@@ -1,0 +1,25 @@
+.pokemonsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 95%;
+  height: 600px;
+  padding-top: 150px;
+  margin: auto;
+  overflow-y: scroll;
+  overscroll-behavior-y: contain;
+  scroll-snap-type: y proximity;
+
+  &__intial {
+    color: $white;
+    text-shadow: 2px 2px $headerBackgroundColor;
+  }
+}
+
+@include media-up(lg) {
+  .pokemonsContainer {
+    padding-top: 100px;
+    height: 650px;
+  }
+}
